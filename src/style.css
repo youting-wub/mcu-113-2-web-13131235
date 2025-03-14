@@ -8,6 +8,10 @@ nav {
 h3 {
   text-align: center;
 }
+section.body {
+  width: 90%;
+  margin: 0px auto;
+}
 .card {
   border-style: solid;
   border-color: #999;
