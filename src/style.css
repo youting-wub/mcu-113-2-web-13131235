@@ -7,6 +7,7 @@ nav {
 }
 h3 {
   text-align: center;
+  color: rgba(0, 0, 0, 0.8);
 }
 section.body {
   width: 90%;
@@ -25,6 +26,10 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin: 10px 0px;
+}
+table th {
+  background-color: #777;
+  color: white;
 }
 th,
 td {
