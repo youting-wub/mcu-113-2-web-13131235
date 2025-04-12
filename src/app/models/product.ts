@@ -11,7 +11,7 @@ export class Product {
 
   price!: number;
 
-  authors!: string;
+  authors!: string[];
 
   isShow!: boolean;
 
