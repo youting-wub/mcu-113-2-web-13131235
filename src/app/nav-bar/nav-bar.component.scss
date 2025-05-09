@@ -17,5 +17,8 @@
     &:hover {
       background-color: #005cbb33;
     }
+    &.active {
+      background-color: #005cbb1a;
+    }
   }
 }
