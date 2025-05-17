@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product';
+import { TmplAstSwitchBlock } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -117,5 +118,9 @@ export class ProductService {
   add(product: Readonly<Product>): void {
     const id = this._data.length === 0 ? 1 : Math.max(...this._data.map(({ id }) => id));
     this._data.push(new Product({ ...product, id }));
+  }
+  remove(productId: number): void {
+    const index = this._data.findIndex(({ id }) => id === productId);
+    this._data.slice(index, 1);
   }
 }
