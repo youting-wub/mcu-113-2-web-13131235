@@ -108,6 +108,11 @@ export class ProductService {
       price: 10000,
     }),
   ];
+
+  getById(productId: number): Product {
+    return this._data.find(({ id }) => id === productId)!;
+  }
+
   getList(name: string | undefined, index: number, size: number): { data: Product[]; count: number } {
     const startIndex = (index - 1) * size;
     const endIndex = startIndex + size;
@@ -116,7 +121,7 @@ export class ProductService {
   }
 
   add(product: Readonly<Product>): void {
-    const id = this._data.length === 0 ? 1 : Math.max(...this._data.map(({ id }) => id));
+    const id = this._data.length === 0 ? 1 : Math.max(...this._data.map(({ id }) => id)) + 1;
     this._data.push(new Product({ ...product, id }));
   }
   remove(productId: number): void {
