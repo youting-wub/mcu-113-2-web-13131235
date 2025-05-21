@@ -17,14 +17,21 @@ export class ProductDetailPageComponent implements OnInit {
 
   readonly router = inject(Router);
 
-  private ProductService = inject(ProductService);
+  private productService = inject(ProductService);
 
   ngOnInit(): void {
-    this.product = this.ProductService.getById(this.id());
+    this.product = this.productService.getById(this.id());
   }
+
   onEdit(): void {
     this.router.navigate(['product', 'form', this.product.id]);
   }
+
+  onRemove(): void {
+    this.productService.remove(this.product.id);
+    this.router.navigate(['products']);
+  }
+
   onBack(): void {
     this.router.navigate(['products']);
   }

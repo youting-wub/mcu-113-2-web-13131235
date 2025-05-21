@@ -35,6 +35,7 @@ export class ProductPageComponent implements OnInit {
   onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
   }
+
   onPageIndexChange(pageIndex: number): void {
     this.pageIndex = pageIndex;
     this.getProducts();

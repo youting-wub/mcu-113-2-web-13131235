@@ -125,7 +125,8 @@ export class ProductService {
     this._data.push(new Product({ ...product, id }));
   }
   remove(productId: number): void {
+    console.log(this._data.length);
     const index = this._data.findIndex(({ id }) => id === productId);
-    this._data.slice(index, 1);
+    this._data.splice(index, 1);
   }
 }
