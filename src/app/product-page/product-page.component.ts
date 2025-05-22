@@ -1,11 +1,12 @@
 import { Product } from './../models/product';
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { BehaviorSubject, combineLatest, startWith, Subject, switchMap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, combineLatest, count, single, startWith, Subject, switchMap } from 'rxjs';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { DefaultValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-product-page',
@@ -18,42 +19,28 @@ export class ProductPageComponent {
 
   private productService = inject(ProductService);
 
-  private readonly pageIndex$ = new BehaviorSubject(1);
+  readonly pageIndex = signal(1);
 
-  get pageIndex() {
-    return this.pageIndex$.value;
-  }
-  set pageIndex(value: number) {
-    this.pageIndex$.next(value);
-  }
+  readonly pageSize = signal(5);
 
-  private readonly refresh$ = new Subject<void>();
-
-  pagrSize = 5;
-
-  private readonly data$ = combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))]).pipe(
-    switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pagrSize))
-  );
-
-  private readonly data = toSignal(this.data$, { initialValue: { data: [], count: 0 } });
+  private readonly data = rxResource({
+    request: () => ({ pageIndex: this.pageIndex(), pageSize: this.pageSize() }),
+    defaultValue: { data: [], count: 0 },
+    loader: ({ request }) => {
+      const { pageIndex, pageSize } = request;
+      return this.productService.getList(undefined, pageIndex, pageSize);
+    },
+  });
 
   readonly totalCount = computed(() => {
-    const { count } = this.data();
+    const { count } = this.data.value();
     return count;
   });
 
   readonly products = computed(() => {
-    const { data } = this.data();
+    const { data } = this.data.value();
     return data;
   });
-  // ngOnInit(): void {
-  //   combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))])
-  //     .pipe(switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pagrSize)))
-  //     .subscribe(({ data, count }) => {
-  //       this.products = data;
-  //       this.totalCount = count;
-  //     });
-  // }
 
   onEdit(product: Product): void {
     this.router.navigate(['product', 'form', product.id]);
@@ -73,10 +60,10 @@ export class ProductPageComponent {
       createDate: new Date('2025/4/9'),
       price: 10000,
     });
-    this.productService.add(product).subscribe(() => this.refresh$.next());
+    this.productService.add(product).subscribe(() => this.data.reload());
   }
 
   onRemove({ id }: Product): void {
-    this.productService.remove(id).subscribe(() => (this.pageIndex = 1));
+    this.productService.remove(id).subscribe(() => this.pageIndex.set(1));
   }
 }

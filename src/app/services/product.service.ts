@@ -140,7 +140,6 @@ export class ProductService {
     return of(newProduct);
   }
   remove(productId: number): Observable<Product> {
-    console.log(this._data.length);
     const index = this._data.findIndex(({ id }) => id === productId);
     const [product] = this._data.splice(index, 1);
     return of(product);
