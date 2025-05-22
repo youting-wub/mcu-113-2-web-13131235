@@ -1,10 +1,11 @@
 import { Product } from './../models/product';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { BehaviorSubject, combineLatest, startWith, Subject, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-page',
@@ -12,7 +13,7 @@ import { BehaviorSubject, combineLatest, startWith, Subject, switchMap } from 'r
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.scss',
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent {
   private router = inject(Router);
 
   private productService = inject(ProductService);
@@ -30,18 +31,29 @@ export class ProductPageComponent implements OnInit {
 
   pagrSize = 5;
 
-  totalCount = 0;
+  private readonly data$ = combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))]).pipe(
+    switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pagrSize))
+  );
 
-  products: Product[] = [];
+  private readonly data = toSignal(this.data$, { initialValue: { data: [], count: 0 } });
 
-  ngOnInit(): void {
-    combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))])
-      .pipe(switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pagrSize)))
-      .subscribe(({ data, count }) => {
-        this.products = data;
-        this.totalCount = count;
-      });
-  }
+  readonly totalCount = computed(() => {
+    const { count } = this.data();
+    return count;
+  });
+
+  readonly products = computed(() => {
+    const { data } = this.data();
+    return data;
+  });
+  // ngOnInit(): void {
+  //   combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))])
+  //     .pipe(switchMap(() => this.productService.getList(undefined, this.pageIndex, this.pagrSize)))
+  //     .subscribe(({ data, count }) => {
+  //       this.products = data;
+  //       this.totalCount = count;
+  //     });
+  // }
 
   onEdit(product: Product): void {
     this.router.navigate(['product', 'form', product.id]);
