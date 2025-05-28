@@ -1,12 +1,11 @@
 import { Product } from './../models/product';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { BehaviorSubject, combineLatest, count, single, startWith, Subject, switchMap } from 'rxjs';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { DefaultValueAccessor } from '@angular/forms';
+
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-page',

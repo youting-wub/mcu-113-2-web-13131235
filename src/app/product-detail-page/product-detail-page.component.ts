@@ -1,5 +1,5 @@
 import { ProductService } from './../services/product.service';
-import { Component, inject, input, numberAttribute, OnInit } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Product } from '../models/product';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
