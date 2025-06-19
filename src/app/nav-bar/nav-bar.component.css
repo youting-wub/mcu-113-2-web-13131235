@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+:host a {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: #005cbb;
+  cursor: pointer;
+  text-decoration: none;
+}
+:host a:hover, :host a:active, :host a:force {
+  text-decoration: none;
+}
+:host a:hover {
+  background-color: rgba(0, 92, 187, 0.2);
+}
+:host a.active {
+  background-color: rgba(0, 92, 187, 0.1019607843);
+}/*# sourceMappingURL=nav-bar.component.css.map */

@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  padding: 20px;
+}
+:host .toolbar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+:host button {
+  padding: 10px 20px;
+  border: solid 1px #007bff;
+  color: #007bff;
+  background-color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+:host input[type=text] {
+  padding: 5px;
+  margin-right: 10px;
+  width: 300px;
+  height: 30px;
+  font-size: 20px;
+  border: solid 1px #007bff;
+  border-radius: 10px;
+}/*# sourceMappingURL=product-page.component.css.map */
