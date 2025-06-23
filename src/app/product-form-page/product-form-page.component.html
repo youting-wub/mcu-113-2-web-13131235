@@ -43,12 +43,13 @@
       <label>單價</label>
       <input type="text" formControlName="price" />
     </div>
-    @if (rice.hasError('required')) {
+    @if (price.hasError('required')) {
     <div class="error-message">請輸入單價</div>
     }
   </div>
   <div class="form-action">
-    <button type="button">取消</button> <button type="button" class="save" [disabled]="form.invalid">儲存</button>
+    <button type="button" (click)="onCancel()">取消</button>
+    <button type="button" class="save" [disabled]="form.invalid" (click)="onSave()">儲存</button>
   </div>
   <pre>{{ form.value|json }}</pre>
 </div>
