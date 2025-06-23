@@ -139,6 +139,11 @@ export class ProductService {
     this._data.push(newProduct);
     return of(newProduct);
   }
+
+  update(product: Readonly<Product>): Observable<Product> {
+    throw new Error('Not implement');
+  }
+
   remove(productId: string): Observable<Product> {
     const index = this._data.findIndex(({ id }) => id === productId);
     const [product] = this._data.splice(index, 1);

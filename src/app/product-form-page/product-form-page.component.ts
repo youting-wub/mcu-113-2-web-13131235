@@ -68,6 +68,7 @@ export class ProductFormPageComponent implements OnInit {
 
   onSave(): void {
     const formData = new Product({
+      id: this.id.value || undefined,
       name: this.name.value!,
       authors: this.authors.value.map((author) => author!),
       company: this.company.value!,
@@ -76,6 +77,7 @@ export class ProductFormPageComponent implements OnInit {
       createDate: new Date(),
       price: +(this.price.value || '0'),
     });
+    const actipn$ = this.id.value ? this.productService.update(formData) : this.productService.add(formData);
     this.productService.add(formData).subscribe(() => this.router.navigate(['products']));
   }
 
